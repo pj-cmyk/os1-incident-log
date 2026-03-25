@@ -28,6 +28,21 @@
 
 ## Resolved Issues
 
+### [2026-03-25] LMStudio fallback causing gateway crashes ✅ — ROOT CAUSE
+- **Resolution:** Removed `lmstudio` fallback from config; provider pointed to `127.0.0.1:1234` which doesn't exist on VPS
+- **Date resolved:** 2026-03-25 21:59 UTC
+- **Owner:** Coywolf, Jared, Adam (collaborative diagnosis)
+- **Root cause:** Config modified at 17:37 UTC added `"fallbacks": ["lmstudio/qwen3.5-27b-claude-4.6-opus-distilled-mlx"]`. LM Studio runs on Mac Mini, not VPS. Every Anthropic API blip triggered fallback to dead endpoint → `TypeError: fetch failed` → gateway crash.
+- **Lesson:** Local model fallbacks must point to reachable endpoints. `127.0.0.1` on VPS ≠ `127.0.0.1` on Mac Mini.
+
+### [2026-03-25] Timmy context overflow (Bedrock → Claude direct migration)
+- **Status:** 🟡 Waiting for Alex
+- **Owner:** Alex (performed migration)
+- **Symptoms:** 200K context burned in 3 messages, repeated overflow errors
+- **Root cause:** Config mismatch after Bedrock → Claude direct API migration
+- **Server:** 18.218.61.218
+- **Next steps:** Alex to SSH in, check `llm.providers` and `max_tokens` settings
+
 ### [2026-03-25] Systemd restart loop — 15,000+ attempts ✅
 - **Resolution:** Patched systemd unit with `StartLimitBurst=5`, `StartLimitIntervalSec=300`, `RestartSec=30`
 - **Date resolved:** 2026-03-25 20:10 UTC
