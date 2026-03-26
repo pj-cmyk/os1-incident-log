@@ -2,6 +2,20 @@
 
 ## Active Issues
 
+### [2026-03-26] Jared 429 rate limit spam loop (3+ hours)
+- **Status:** Open — Feature request
+- **Owner:** Clawdbot (gateway-level fix needed)
+- **Symptoms:** Jared hit Anthropic rate limit, gateway kept retrying, each retry generated an error message to group chat, creating 3+ hours of 429 spam
+- **Root cause:** Gateway has no graceful handling for 429 errors — it retries and reports each failure, creating an infinite loop
+- **Impact:** Flooded multiple group chats with hundreds of error messages
+- **Required fix (gateway-level):**
+  1. On 429, send ONE human-readable message ("I've hit my rate limit, need to rest for ~1 hour")
+  2. Suppress further retry attempts
+  3. Go quiet until rate limit resets
+  4. Resume normally
+- **Why agent-level fix doesn't work:** When rate-limited, no LLM processes anything — can't read AGENTS.md rules
+- **Next steps:** PJ to add `on429` behavior to Clawdbot gateway
+
 ### [2026-03-26] Adam dropping tasks / context loss in group chat
 - **Status:** Open
 - **Owner:** Adam
