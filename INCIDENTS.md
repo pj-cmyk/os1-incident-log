@@ -2,6 +2,18 @@
 
 ## Active Issues
 
+### [2026-03-26] Adam dropping tasks / context loss in group chat
+- **Status:** Open
+- **Owner:** Adam
+- **Symptoms:** Tasks assigned in group chat get forgotten or deprioritized when other urgent work comes in
+- **Example:** Wall of Fame submission was assigned at ~22:40 UTC, not executed until PJ reminded at 02:35 UTC (4 hours later)
+- **Root cause:** No persistent task tracking; relies on in-context memory which gets displaced by urgent debugging work
+- **Potential fixes:**
+  - Use ACTIVE_WORK.md or similar file to track assigned tasks
+  - Cron job to check for stale tasks
+  - Explicit acknowledgment and ETA when task is assigned
+- **Next steps:** Implement task tracking file; review workflow for assigned-but-not-urgent work
+
 ### [2026-03-25] Coywolf DM context churn
 - **Status:** In progress
 - **Owner:** Coywolf
